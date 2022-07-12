@@ -15,6 +15,9 @@ public class BugsEntity {
     private String bugName;
     private String bugUrgency;
 
+    public int getBugId() {return bugId;}
+    public void setBugId(int bugId) {this.bugId = bugId;}
+
     public boolean isPublished() {return isPublished;}
     public void setPublished(boolean published) {isPublished = published;}
 

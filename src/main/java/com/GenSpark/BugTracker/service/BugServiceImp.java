@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BugServiceImp implements BugService{
@@ -19,6 +20,17 @@ public class BugServiceImp implements BugService{
         return this.bugRepository.findAll();
     }
 
+    @Override
+    public BugsEntity getBugById(int bugId){
+        Optional<BugsEntity> b = this.bugRepository.findById(bugId);
+        BugsEntity bugsEntity = null;
+        if(b.isPresent()){
+            bugsEntity = b.get();
+        }
+        else
+            throw new RuntimeException("ERROR! Course not found for id ::");
+        return bugsEntity;
+    }
     @Override
     public BugsEntity addBug(BugsEntity bug) {
         return this.bugRepository.save(bug);

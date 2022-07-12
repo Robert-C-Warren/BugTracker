@@ -13,7 +13,7 @@ public class LogInEntity {
     private String email;
     private String password;
     private String name;
-    private boolean admin;
+    private String role;
 
     public String getEmail() {return email;}
     public void setEmail(String email) {this.email = email;}
@@ -21,8 +21,8 @@ public class LogInEntity {
     public String getPassword() {return password;}
     public void setPassword(String password) {this.password = password;}
 
-    public boolean isAdmin() {return admin;}
-    public void setAdmin(boolean admin) {this.admin = admin;}
+    public String getRole() {return role;}
+    public void setRole(String role) {this.role = role;}
 
     public String getName() {return name;}
     public void setName(String name) {this.name = name;}
@@ -30,10 +30,10 @@ public class LogInEntity {
     public LogInEntity() {
     }
 
-    public LogInEntity(String email, String password, String name, boolean admin) {
+    public LogInEntity(String email, String password, String name, String role) {
         this.email = email;
         this.password = password;
-        this.admin = admin;
+        this.role = role;
         this.name = name;
     }
 

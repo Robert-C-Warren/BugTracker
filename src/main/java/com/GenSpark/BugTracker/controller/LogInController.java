@@ -10,10 +10,6 @@ import org.springframework.web.bind.annotation.*;
 public class LogInController {
     @Autowired
     LogInService logInService;
-
-    @GetMapping("/login")
-    public LogInEntity login(@RequestBody LogInEntity logInE){return this.logInService.login(logInE);}
-
-    @PostMapping("/UserRegister")
+    @PostMapping("/userregister")
     public LogInEntity createUser(@RequestBody LogInEntity logInE){return this.logInService.createUser(logInE);}
 }

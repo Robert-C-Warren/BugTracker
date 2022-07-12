@@ -25,4 +25,14 @@ public class BugController {
     @DeleteMapping("/bug/{bugId}")
     public String deleteBug(@PathVariable int bugId){return this.bugService.deleteBug(bugId);}
 
+    @GetMapping("/user")
+    public String helloUser(){
+        return "user";
+    }
+
+    @GetMapping("/admin")
+    public String helloAdmin(){
+        return "admin";
+    }
+
 }

@@ -12,17 +12,7 @@ public class LogInServiceImp implements LogInService {
     @Autowired
     LogInRepository logInRepository;
     @Autowired
-    BCryptPasswordEncoder passwordEncoder;
-    @Override
-    public LogInEntity login(LogInEntity logInE) {
-        LogInEntity logIn = this.logInRepository.findOneByEmailAndPassword(logInE.getEmail(), logInE.getPassword());
-
-        if( logIn == null){
-            return new LogInEntity("failed","failed","failed",false);
-        }
-        else
-            return logIn;
-    }
+    PasswordEncoder passwordEncoder;
 
     @Override
     public LogInEntity createUser(LogInEntity logIn) {
