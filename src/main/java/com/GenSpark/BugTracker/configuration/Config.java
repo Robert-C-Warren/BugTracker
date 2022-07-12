@@ -1,5 +1,6 @@
 package com.GenSpark.BugTracker.configuration;
 
+import com.GenSpark.BugTracker.repository.CustomDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +23,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class Config extends WebSecurityConfigurerAdapter {
     @Autowired
-    private UserDetailsService userDetailService;
+    private CustomDetailService userDetailService;
     @Autowired
     private JWTTokenHelper jwtTokenHelper;
     @Autowired

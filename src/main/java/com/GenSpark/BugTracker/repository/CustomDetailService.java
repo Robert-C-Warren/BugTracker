@@ -15,10 +15,11 @@ public class CustomDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         LogInEntity logIn = logInRepository.findByEmail(username);
+
         if (logIn == null){
             throw new UsernameNotFoundException("user not found");
         }
 
-        return new LoginDetails(logIn);
+        return logIn;
     }
 }

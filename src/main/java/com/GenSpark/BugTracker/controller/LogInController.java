@@ -2,8 +2,6 @@ package com.GenSpark.BugTracker.controller;
 
 import com.GenSpark.BugTracker.configuration.JWTTokenHelper;
 import com.GenSpark.BugTracker.entity.LogInEntity;
-import com.GenSpark.BugTracker.repository.CustomDetailService;
-import com.GenSpark.BugTracker.repository.LoginDetails;
 import com.GenSpark.BugTracker.request_response.AuthenticationRequest;
 import com.GenSpark.BugTracker.request_response.LogInResponse;
 import com.GenSpark.BugTracker.service.LogInService;
@@ -13,6 +11,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,7 +40,7 @@ public class LogInController {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        LoginDetails logIn = (LoginDetails) authentication.getPrincipal();
+        UserDetails logIn = (UserDetails) authentication.getPrincipal();
         String jwtToken = jwtTokenHelper.generateToken(logIn.getUsername());
 
         LogInResponse response = new LogInResponse();

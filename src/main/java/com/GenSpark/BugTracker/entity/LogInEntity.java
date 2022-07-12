@@ -1,12 +1,18 @@
 package com.GenSpark.BugTracker.entity;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.Collection;
+import java.util.Collections;
 
 @Entity
-public class LogInEntity {
+public class LogInEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long userId;
@@ -18,7 +24,39 @@ public class LogInEntity {
     public String getEmail() {return email;}
     public void setEmail(String email) {this.email = email;}
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.singleton(new SimpleGrantedAuthority(this.getRole()));
+
+    }
+
     public String getPassword() {return password;}
+
+    @Override
+    public String getUsername() {
+        return this.getEmail();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
     public void setPassword(String password) {this.password = password;}
 
     public String getRole() {return role;}
