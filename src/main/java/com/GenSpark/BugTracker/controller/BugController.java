@@ -16,6 +16,8 @@ public class BugController {
     @GetMapping("/bugs")
     public List<BugsEntity> getBugs(){return this.bugService.getAllBugs();}
 
+    @GetMapping("/bugs/{id}")
+    public BugsEntity getBug(@PathVariable int bugId){return this.bugService.getBugById(bugId);}
     @PostMapping("/bug")
     public BugsEntity addBug(@RequestBody BugsEntity bug){ return this.bugService.addBug(bug);}
 
