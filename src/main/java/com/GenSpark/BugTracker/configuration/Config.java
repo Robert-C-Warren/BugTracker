@@ -4,6 +4,7 @@ import com.GenSpark.BugTracker.repository.CustomDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -74,7 +75,7 @@ public class Config extends WebSecurityConfigurerAdapter {
                                                                 .antMatchers("/admin").hasAuthority("admin")
                                                                 .antMatchers("/bug").hasAuthority("admin")
                                                                 .antMatchers("/bug/{bugId}").hasAuthority("admin")
-                                                                .anyRequest().authenticated())
+                                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll().anyRequest().authenticated())
                                 .addFilterBefore(new JWTAuthenticationFilter(userDetailService, jwtTokenHelper), UsernamePasswordAuthenticationFilter.class);
 
         http.csrf().disable();

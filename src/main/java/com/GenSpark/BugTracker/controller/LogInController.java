@@ -4,6 +4,7 @@ import com.GenSpark.BugTracker.configuration.JWTTokenHelper;
 import com.GenSpark.BugTracker.entity.LogInEntity;
 import com.GenSpark.BugTracker.request_response.AuthenticationRequest;
 import com.GenSpark.BugTracker.request_response.LogInResponse;
+import com.GenSpark.BugTracker.request_response.UserInfo;
 import com.GenSpark.BugTracker.service.LogInService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,10 +17,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.NoSuchAlgorithmException;
+import java.security.Principal;
 import java.security.spec.InvalidKeySpecException;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "*")
 public class LogInController {
     @Autowired
     LogInService logInService;
@@ -48,6 +50,19 @@ public class LogInController {
 
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/auth/userinfo")
+    public ResponseEntity<?> getUserInfo(Principal user){
+        LogInEntity logIn = (LogInEntity) userDetailsService.loadUserByUsername(user.getName());
+
+        UserInfo userInfo = new UserInfo();
+        userInfo.setEmail(logIn.getEmail());
+        userInfo.setName(logIn.getName());
+        userInfo.setRoles(logIn.getRole());
+
+        return ResponseEntity.ok(userInfo);
+    }
+
     @PostMapping("/userregister")
     public LogInEntity createUser(@RequestBody LogInEntity logInE){return this.logInService.createUser(logInE);}
 
