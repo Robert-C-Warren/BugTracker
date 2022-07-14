@@ -62,6 +62,9 @@ public class LogInController {
 
         return ResponseEntity.ok(userInfo);
     }
+    @DeleteMapping("/user/{userId}")
+    public String deleteBug(@PathVariable int userId){return this.logInService.deleteUser(userId);}
+
 
     @PostMapping("/userregister")
     public LogInEntity createUser(@RequestBody LogInEntity logInE){return this.logInService.createUser(logInE);}

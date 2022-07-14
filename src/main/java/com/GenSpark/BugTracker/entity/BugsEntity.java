@@ -39,7 +39,8 @@ public class BugsEntity {
     public BugsEntity() {
     }
 
-    public BugsEntity(boolean isPublished, String bugStatus, String bugDesc, String assignedTo, String bugName, String bugUrgency) {
+    public BugsEntity(int bugId, boolean isPublished, String bugStatus, String bugDesc, String assignedTo, String bugName, String bugUrgency) {
+        this.bugId = bugId;
         this.isPublished = isPublished;
         this.bugStatus = bugStatus;
         this.bugDesc = bugDesc;

@@ -1,6 +1,7 @@
 package com.GenSpark.BugTracker.configuration;
 
 import com.GenSpark.BugTracker.repository.CustomDetailService;
+import com.GenSpark.BugTracker.service.EmailSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,10 +20,14 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @Configuration
 @EnableWebSecurity
+
 public class Config extends WebSecurityConfigurerAdapter {
+
     @Autowired
     private CustomDetailService userDetailService;
     @Autowired
@@ -71,14 +76,17 @@ public class Config extends WebSecurityConfigurerAdapter {
                                                                 .antMatchers("/userregister").permitAll()
                                                                 .antMatchers("/auth/login").permitAll()
                                                                 .antMatchers("/user").hasAnyAuthority("user", "admin")
-                                                                .antMatchers("/bugs").hasAnyAuthority("user", "admin")
+                                                                .antMatchers("/bugs").permitAll()
+                                                                .antMatchers("/sendMail/{email}").permitAll()
+                                                                .antMatchers("/sendMail").permitAll()
+                                                                .antMatchers("/user/{userId}").permitAll()
                                                                 .antMatchers("/admin").hasAuthority("admin")
-                                                                .antMatchers("/bug").hasAuthority("admin")
+                                                                .antMatchers("/bug").hasAnyAuthority( "user","admin")
                                                                 .antMatchers("/bug/{bugId}").hasAuthority("admin")
                                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll().anyRequest().authenticated())
                                 .addFilterBefore(new JWTAuthenticationFilter(userDetailService, jwtTokenHelper), UsernamePasswordAuthenticationFilter.class);
 
-        http.csrf().disable();
+        http.csrf().disable().cors().and().headers().frameOptions().disable();
     }
 
 

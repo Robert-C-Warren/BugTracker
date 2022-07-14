@@ -19,4 +19,10 @@ public class LogInServiceImp implements LogInService {
         logIn.setPassword(passwordEncoder.encode(logIn.getPassword()));
         return this.logInRepository.save(logIn);
     }
+
+    @Override
+    public String deleteUser(long userid) {
+         this.logInRepository.deleteById(userid);
+         return "deleted successfully";
+    }
 }

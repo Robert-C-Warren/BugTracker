@@ -2,14 +2,19 @@ package com.GenSpark.BugTracker.controller;
 
 import com.GenSpark.BugTracker.entity.BugsEntity;
 import com.GenSpark.BugTracker.service.BugService;
+import com.GenSpark.BugTracker.service.EmailSender;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class BugController {
+
+    @Autowired
+    private EmailSender emailSender;
     @Autowired
     private BugService bugService;
 
@@ -21,7 +26,7 @@ public class BugController {
     @PostMapping("/bug")
     public BugsEntity addBug(@RequestBody BugsEntity bug){ return this.bugService.addBug(bug);}
 
-    @PutMapping("/bug")
+    @PutMapping("/bugs")
     public BugsEntity updateBug(@RequestBody BugsEntity bug){return this.bugService.updateBug(bug);}
 
     @DeleteMapping("/bug/{bugId}")
@@ -35,6 +40,13 @@ public class BugController {
     @GetMapping("/admin")
     public String helloAdmin(){
         return "admin";
+    }
+
+    @GetMapping("/sendMail/{toEmail}")
+    public void sendEmail(@PathVariable String toEmail){
+        emailSender.sendEmail(toEmail.trim() , "Bug Submission", "Thank you for your feedback \n" +
+                                                                        "your feedback has been submitted \n" +
+                                                                        "And we are looking into the issue as fast as possible ");
     }
 
 }
