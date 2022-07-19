@@ -1,7 +1,9 @@
 package com.GenSpark.BugTracker.service;
 
 import com.GenSpark.BugTracker.entity.BugsEntity;
+import com.GenSpark.BugTracker.entity.CommentsEntity;
 import com.GenSpark.BugTracker.repository.BugRepository;
+import com.GenSpark.BugTracker.repository.CommentsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,9 @@ public class BugServiceImp implements BugService{
 
     @Autowired
     private BugRepository bugRepository;
+
+    @Autowired
+    private CommentsRepository commentsRepository;
 
     @Override
     public List<BugsEntity> getAllBugs() {
@@ -46,5 +51,21 @@ public class BugServiceImp implements BugService{
         this.bugRepository.deleteById(bugId);
 
         return "Deleted Successfully";
+    }
+
+    @Override
+    public String addComment(int bugId, CommentsEntity commentsEntity) {
+        BugsEntity bugsEntity = this.getBugById(bugId);
+        bugsEntity.getBugComments().add(commentsEntity);
+        this.bugRepository.save(bugsEntity);
+        return "Comment added";
+    }
+
+    @Override
+    public String deleteComment(int bugId, int commentId) {
+        BugsEntity bugsEntity = this.getBugById(bugId);
+        bugsEntity.getBugComments().remove(commentsRepository.findById(commentId).get());
+        this.bugRepository.save(bugsEntity);
+        return "deleted Successfully";
     }
 }

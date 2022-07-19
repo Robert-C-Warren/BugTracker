@@ -1,6 +1,7 @@
 package com.GenSpark.BugTracker.controller;
 
 import com.GenSpark.BugTracker.entity.BugsEntity;
+import com.GenSpark.BugTracker.entity.CommentsEntity;
 import com.GenSpark.BugTracker.service.BugService;
 import com.GenSpark.BugTracker.service.EmailSender;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +42,18 @@ public class BugController {
     public String helloAdmin(){
         return "admin";
     }
+
+    @PostMapping("/comment/{bugId}")
+    public String addComment(@PathVariable int bugId, @RequestBody CommentsEntity commentsEntity){
+        this.bugService.addComment(bugId, commentsEntity);
+        return "Comment Added";
+    }
+    @DeleteMapping("/comment/delete/{bugId}/{commentId}")
+    public String deleteComment(@PathVariable int bugId, @PathVariable int commentId){
+        this.bugService.deleteComment(bugId, commentId);
+        return "Comment deleted";
+    }
+
 
     @GetMapping("/sendMail/{toEmail}")
     public void sendEmail(@PathVariable String toEmail){
