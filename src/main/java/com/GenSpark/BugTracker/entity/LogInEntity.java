@@ -13,9 +13,10 @@ import java.util.Collections;
 
 @Entity
 public class LogInEntity implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long userId;
+    private Long userId;
     private String email;
     private String password;
     private String name;
@@ -64,6 +65,13 @@ public class LogInEntity implements UserDetails {
 
     public String getName() {return name;}
     public void setName(String name) {this.name = name;}
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 
     public LogInEntity() {
     }

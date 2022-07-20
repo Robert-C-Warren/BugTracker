@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.NoSuchAlgorithmException;
 import java.security.Principal;
 import java.security.spec.InvalidKeySpecException;
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -62,12 +63,21 @@ public class LogInController {
 
         return ResponseEntity.ok(userInfo);
     }
-    @DeleteMapping("/user/{userId}")
-    public String deleteBug(@PathVariable int userId){return this.logInService.deleteUser(userId);}
+
+    @GetMapping("/users")
+    public List<LogInEntity> getAllUsers() { return this.logInService.getAllUsers(); }
+
+    @GetMapping("/user/{userId}")
+    public LogInEntity getUserById(@PathVariable String userId) {return this.logInService.getUserById(Long.parseLong(userId)); }
+
+    @DeleteMapping("/user/{userId}") String deleteBug(@PathVariable String userId){return this.logInService.deleteUser(Long.parseLong(userId));}
 
 
     @PostMapping("/userregister")
     public LogInEntity createUser(@RequestBody LogInEntity logInE){return this.logInService.createUser(logInE);}
+
+    @PutMapping("/users")
+    public LogInEntity updateUser(@RequestBody LogInEntity logInE) {return this.logInService.updateUser(logInE); }
 
 
 }
