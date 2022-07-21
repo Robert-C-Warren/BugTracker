@@ -79,7 +79,7 @@ public class Config extends WebSecurityConfigurerAdapter {
                                                                 .antMatchers("/bugs").hasAnyAuthority("user", "admin")
                                                                 .antMatchers("/sendMail/{email}").permitAll()
                                                                 .antMatchers("/sendMail").permitAll()
-                                                                .antMatchers("/comment/{bugId}").permitAll()
+                                                                .antMatchers("/comment/{bugId}").hasAnyAuthority("user", "admin")
                                                                 .antMatchers("/comment/delete/{bugId}/{commentId}").hasAuthority("admin")
                                                                 .antMatchers("/user/{userId}").permitAll()
                                                                 .antMatchers("/admin").hasAuthority("admin")
