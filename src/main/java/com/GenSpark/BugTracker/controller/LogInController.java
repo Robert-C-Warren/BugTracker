@@ -5,6 +5,7 @@ import com.GenSpark.BugTracker.entity.LogInEntity;
 import com.GenSpark.BugTracker.request_response.AuthenticationRequest;
 import com.GenSpark.BugTracker.request_response.LogInResponse;
 import com.GenSpark.BugTracker.request_response.UserInfo;
+import com.GenSpark.BugTracker.service.EmailSender;
 import com.GenSpark.BugTracker.service.LogInService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,8 @@ import java.util.List;
 @RestController
 @CrossOrigin(origins = "*")
 public class LogInController {
+    @Autowired
+    private EmailSender emailSender;
     @Autowired
     LogInService logInService;
 
@@ -79,5 +82,11 @@ public class LogInController {
     @PutMapping("/users")
     public LogInEntity updateUser(@RequestBody LogInEntity logInE) {return this.logInService.updateUser(logInE); }
 
+    @GetMapping("/successSignUp/{toEmail}")
+    public void sendEmail(@PathVariable String toEmail){
+        emailSender.sendEmail(toEmail.trim() , "Thank you from Bug Manager", "Thank you for joining our platform \n" +
+                "Bug manager is a growing site and with your help we will grow bigger \n" +
+                "Our community is helping the sites and software to grow and improve");
+    }
 
 }
