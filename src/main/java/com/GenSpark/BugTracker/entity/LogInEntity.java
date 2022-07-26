@@ -11,7 +11,7 @@ import javax.persistence.Id;
 import java.util.Collection;
 import java.util.Collections;
 
-@Entity
+@Entity // implements Userdetail for JWT authentication
 public class LogInEntity implements UserDetails {
 
     @Id
@@ -30,7 +30,7 @@ public class LogInEntity implements UserDetails {
         return Collections.singleton(new SimpleGrantedAuthority(this.getRole()));
 
     }
-
+    //
     public String getPassword() {return password;}
 
     @Override

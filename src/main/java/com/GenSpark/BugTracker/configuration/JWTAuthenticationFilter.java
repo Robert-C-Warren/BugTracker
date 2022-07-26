@@ -1,6 +1,5 @@
 package com.GenSpark.BugTracker.configuration;
 
-import com.GenSpark.BugTracker.repository.CustomDetailService;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,17 +22,23 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         this.userDetailsService = userDetailsService;
         this.jwtTokenHelper = jwtTokenHelper;
     }
-    @Override
+    @Override // Validate the token we got.
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authToken =jwtTokenHelper.getToken(request);
         if(null != authToken){
             String user = jwtTokenHelper.getUsernameFromToken(authToken);
         if(null != user){
             UserDetails userDetails = userDetailsService.loadUserByUsername(user);
+
+            // if token is valid configure Spring Security to manually set
+            // authentication
             if(jwtTokenHelper.validateToken(authToken, userDetails)){
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetails(request));
 
+                // After setting the Authentication in the context, we specify
+                // that the current user is authenticated. So it passes the
+                // Spring Security Configurations successfully.
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
             }
         }

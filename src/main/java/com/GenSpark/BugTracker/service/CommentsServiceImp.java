@@ -10,13 +10,13 @@ public class CommentsServiceImp implements CommentsService {
     @Autowired
     CommentsRepository commentsRepository;
 
-    @Override
+    @Override // Delete comment
     public String deleteComment(int id) {
         this.commentsRepository.deleteById(id);
         return "Deleted Successfully";
     }
 
-    @Override
+    @Override // Add Comment
     public CommentsEntity addComment(CommentsEntity commentsEntity) {
         return this.commentsRepository.save(commentsEntity);
     }

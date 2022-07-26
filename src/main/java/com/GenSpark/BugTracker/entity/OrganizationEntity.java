@@ -13,6 +13,7 @@ public class OrganizationEntity {
     private String organizationName;
     private String organizationDescription;
 
+    //Relational Mapping. Creating a column called bugs_id for every bug in an organization
     @OneToMany(cascade = CascadeType.ALL,  fetch = FetchType.LAZY)
     @JoinColumn(name = "bugs_id")
     private List<BugsEntity> organizationBug;

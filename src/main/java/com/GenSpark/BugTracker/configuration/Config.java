@@ -1,7 +1,6 @@
 package com.GenSpark.BugTracker.configuration;
 
-import com.GenSpark.BugTracker.repository.CustomDetailService;
-import com.GenSpark.BugTracker.service.EmailSender;
+import com.GenSpark.BugTracker.service.CustomDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,15 +12,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @Configuration
 @EnableWebSecurity
@@ -36,6 +30,9 @@ public class Config extends WebSecurityConfigurerAdapter {
     private AuthenticationEntryPoint authenticationEntryPoint;
     @Bean
     AuthenticationProvider authenticationProvider(){
+        // configure AuthenticationManager so that it knows from where to load
+        // user for matching credentials
+        // Use BCryptPasswordEncoder
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(userDetailService);
         provider.setPasswordEncoder(new BCryptPasswordEncoder());
@@ -48,7 +45,7 @@ public class Config extends WebSecurityConfigurerAdapter {
         return super.authenticationManager();
     }
 
-    @Bean
+    @Bean // Encoder that is used to encode our passwords
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
@@ -92,8 +89,9 @@ public class Config extends WebSecurityConfigurerAdapter {
                                                                 .antMatchers("/bug").hasAnyAuthority( "user","admin")
                                                                 .antMatchers("/bug/{bugId}").hasAuthority("admin")
                                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll().anyRequest().authenticated())
+                                // Add a filter to validate the tokens with every request
                                 .addFilterBefore(new JWTAuthenticationFilter(userDetailService, jwtTokenHelper), UsernamePasswordAuthenticationFilter.class);
-
+        // disable properties we are not using
         http.csrf().disable().cors().and().headers().frameOptions().disable();
     }
 

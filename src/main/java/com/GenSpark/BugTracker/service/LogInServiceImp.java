@@ -18,24 +18,24 @@ public class LogInServiceImp implements LogInService {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    @Override
+    @Override // Add User
     public LogInEntity createUser(LogInEntity logIn) {
         logIn.setPassword(passwordEncoder.encode(logIn.getPassword()));
         return this.logInRepository.save(logIn);
     }
 
-    @Override
+    @Override // Delete User
     public String deleteUser(long userid) {
          this.logInRepository.deleteById(userid);
          return "deleted successfully";
     }
 
-    @Override
+    @Override // Retrieve All users
     public List<LogInEntity> getAllUsers() {
         return this.logInRepository.findAll();
     }
 
-    @Override
+    @Override // Retrieve user by id
     public LogInEntity getUserById(long userId) {
         Optional<LogInEntity> u = this.logInRepository.findById(userId);
         LogInEntity user = null;
@@ -48,7 +48,7 @@ public class LogInServiceImp implements LogInService {
         return user;
     }
 
-    @Override
+    @Override // Update user
     public LogInEntity updateUser(LogInEntity login) {
         LogInEntity oldLogin = getUserById(login.getUserId());
         login.setPassword(oldLogin.getPassword());

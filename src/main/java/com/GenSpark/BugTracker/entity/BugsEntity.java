@@ -16,6 +16,7 @@ public class BugsEntity {
     private String assignedTo;
     private String bugName;
     private String bugUrgency;
+    //Relational Mapping. Creating a column called bug_id for every comment in a bug
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn( name = "bug_id")
     private List<CommentsEntity> bugComments = new ArrayList<>();

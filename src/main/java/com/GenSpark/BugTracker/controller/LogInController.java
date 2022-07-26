@@ -39,14 +39,15 @@ public class LogInController {
     @Autowired
     JWTTokenHelper jwtTokenHelper;
 
-    @PostMapping("/auth/login")
+    @PostMapping("/auth/login") // returns a token (response) when authenticated
     public ResponseEntity<?> login(@RequestBody AuthenticationRequest authenticationRequest) throws InvalidKeySpecException, NoSuchAlgorithmException {
       final  Authentication authentication = authenticationManager.authenticate
                 (new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(), authenticationRequest.getPassword()));
-
+        // Check Spring web authentication if success
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
+        // getting and setting a login entity
         UserDetails logIn = (UserDetails) authentication.getPrincipal();
+        //generate token by username
         String jwtToken = jwtTokenHelper.generateToken(logIn.getUsername());
 
         LogInResponse response = new LogInResponse();
@@ -55,7 +56,7 @@ public class LogInController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/auth/userinfo")
+    @GetMapping("/auth/userinfo") // Get User information
     public ResponseEntity<?> getUserInfo(Principal user){
         LogInEntity logIn = (LogInEntity) userDetailsService.loadUserByUsername(user.getName());
 
@@ -67,22 +68,23 @@ public class LogInController {
         return ResponseEntity.ok(userInfo);
     }
 
-    @GetMapping("/users")
+    @GetMapping("/users") // get all users
     public List<LogInEntity> getAllUsers() { return this.logInService.getAllUsers(); }
 
-    @GetMapping("/user/{userId}")
+    @GetMapping("/user/{userId}") // get user request by id in path
     public LogInEntity getUserById(@PathVariable String userId) {return this.logInService.getUserById(Long.parseLong(userId)); }
 
-    @DeleteMapping("/user/{userId}") String deleteBug(@PathVariable String userId){return this.logInService.deleteUser(Long.parseLong(userId));}
+    @DeleteMapping("/user/{userId}")  // delete user request by id in path
+    String deleteBug(@PathVariable String userId){return this.logInService.deleteUser(Long.parseLong(userId));}
 
 
-    @PostMapping("/userregister")
+    @PostMapping("/userregister") // add user request by body
     public LogInEntity createUser(@RequestBody LogInEntity logInE){return this.logInService.createUser(logInE);}
 
-    @PutMapping("/users")
+    @PutMapping("/users") // update user request by id in body
     public LogInEntity updateUser(@RequestBody LogInEntity logInE) {return this.logInService.updateUser(logInE); }
 
-    @GetMapping("/successSignUp/{toEmail}")
+    @GetMapping("/successSignUp/{toEmail}") // Send mail request by passing email to path
     public void sendEmail(@PathVariable String toEmail){
         emailSender.sendEmail(toEmail.trim() , "Thank you from Bug Manager", "Thank you for joining our platform \n" +
                 "Bug manager is a growing site and with your help we will grow bigger \n" +

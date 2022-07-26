@@ -14,7 +14,7 @@ import java.util.Date;
 
 @Component
 public class JWTTokenHelper {
-
+    // Set Variable with values from application properties
     @Value("${jwt.auth.app}")
     private String appName;
 
@@ -23,9 +23,10 @@ public class JWTTokenHelper {
 
     @Value("${jwt.auth.expires_in}")
     private int expiresIn;
-
+    // Set secret key algorithm
     private SignatureAlgorithm SIGNATURE_ALGORITHM = SignatureAlgorithm.HS256;
 
+    //for retrieving any information from token we will need the secret key
     private Claims getAllClaimsFromToken(String token) {
         Claims claims;
         try {
@@ -39,7 +40,7 @@ public class JWTTokenHelper {
         return claims;
     }
 
-
+    //retrieve username from jwt token
     public String getUsernameFromToken(String token) {
         String username;
         try {
@@ -51,6 +52,10 @@ public class JWTTokenHelper {
         return username;
     }
 
+    // Creating the token -
+    // Define  claims of the token, like Issuer, Expiration, Subject, and the ID
+    // Sign the JWT using the signature algorithm (HS256) and secret key.
+    // Compaction of the JWT to a URL-safe string
     public String generateToken(String username) throws InvalidKeySpecException, NoSuchAlgorithmException {
 
         return Jwts.builder()
@@ -62,10 +67,12 @@ public class JWTTokenHelper {
                 .compact();
     }
 
+    //Generate Token expiration date
     private Date generateExpirationDate() {
         return new Date(new Date().getTime() + expiresIn * 1000);
     }
 
+    //validate token
     public Boolean validateToken(String token, UserDetails userDetails) {
         final String username = getUsernameFromToken(token);
         return (
@@ -80,7 +87,7 @@ public class JWTTokenHelper {
         return expireDate.before(new Date());
     }
 
-
+    //retrieve expiration date from jwt token
     private Date getExpirationDate(String token) {
         Date expireDate;
         try {
@@ -92,7 +99,7 @@ public class JWTTokenHelper {
         return expireDate;
     }
 
-
+    //retrieve issue date from token
     public Date getIssuedAtDateFromToken(String token) {
         Date issueAt;
         try {
@@ -104,6 +111,9 @@ public class JWTTokenHelper {
         return issueAt;
     }
 
+    // retrieve to token where header is "Authorization"
+    // JWT Token is in the form "Bearer token". Remove Bearer word and get
+    // Return only the token
     public String getToken( HttpServletRequest request ) {
 
         String authHeader = getAuthHeaderFromHeader( request );
@@ -113,7 +123,7 @@ public class JWTTokenHelper {
 
         return null;
     }
-
+    // Get Auth header where it is "Authorization"
     public String getAuthHeaderFromHeader( HttpServletRequest request ) {
         return request.getHeader("Authorization");
     }

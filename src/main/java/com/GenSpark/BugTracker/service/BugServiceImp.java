@@ -20,12 +20,12 @@ public class BugServiceImp implements BugService{
     @Autowired
     private CommentsRepository commentsRepository;
 
-    @Override
+    @Override //retrieve all bugs
     public List<BugsEntity> getAllBugs() {
         return this.bugRepository.findAll();
     }
 
-    @Override
+    @Override // retrieve bug by id
     public BugsEntity getBugById(int bugId){
         Optional<BugsEntity> b = this.bugRepository.findById(bugId);
         BugsEntity bugsEntity = null;
@@ -36,24 +36,24 @@ public class BugServiceImp implements BugService{
             throw new RuntimeException("ERROR! Course not found for id ::");
         return bugsEntity;
     }
-    @Override
+    @Override // add bug
     public BugsEntity addBug(BugsEntity bug) {
         return this.bugRepository.save(bug);
     }
 
-    @Override
+    @Override // update bug
     public BugsEntity updateBug(BugsEntity bug) {
         return this.bugRepository.save(bug);
     }
 
-    @Override
+    @Override // delete bug
     public String deleteBug(int bugId) {
         this.bugRepository.deleteById(bugId);
 
         return "Deleted Successfully";
     }
 
-    @Override
+    @Override // add a comment to a bug
     public String addComment(int bugId, CommentsEntity commentsEntity) {
         BugsEntity bugsEntity = this.getBugById(bugId);
         bugsEntity.getBugComments().add(commentsEntity);
@@ -61,7 +61,7 @@ public class BugServiceImp implements BugService{
         return "Comment added";
     }
 
-    @Override
+    @Override // delete a comment from a bug
     public String deleteComment(int bugId, int commentId) {
         BugsEntity bugsEntity = this.getBugById(bugId);
         bugsEntity.getBugComments().remove(commentsRepository.findById(commentId).get());

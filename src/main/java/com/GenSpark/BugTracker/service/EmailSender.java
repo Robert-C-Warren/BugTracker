@@ -8,9 +8,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class EmailSender {
+    // Using Spring Mail
     @Autowired
     private JavaMailSender javaMailSender;
-
+    // construct an email and sends it
     public void sendEmail(String toEmail, String subject, String body){
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("BugManager");

@@ -20,13 +20,12 @@ public class OrganizationServiceImp implements OrganizationService{
     @Autowired
     private CommentsService commentsService;
 
-
-    @Override
+    @Override // Retrieve All organizations
     public List<OrganizationEntity> getAllOrganization() {
         return this.organizationRepository.findAll();
     }
 
-    @Override
+    @Override // Find organization by id
     public OrganizationEntity getOrganizationById(int organId) {
         Optional<OrganizationEntity> b = this.organizationRepository.findById(organId);
         OrganizationEntity organizationEntity = null;
@@ -38,23 +37,23 @@ public class OrganizationServiceImp implements OrganizationService{
         return organizationEntity;
     }
 
-    @Override
+    @Override // Add organization
     public OrganizationEntity addOrganization(OrganizationEntity organizationEntity) {
         return this.organizationRepository.save(organizationEntity);
     }
 
-    @Override
+    @Override // Update organization
     public OrganizationEntity updateOrganization(OrganizationEntity organizationEntity) {
         return this.organizationRepository.save(organizationEntity);
     }
 
-    @Override
+    @Override // Delete organization
     public String deleteOrganization(int organId) {
         this.organizationRepository.deleteById(organId);
         return "Deleted Successfully";
     }
 
-    @Override
+    @Override // Add-bug to an organization
     public String addBug(int organId, BugsEntity bugsEntity) {
         OrganizationEntity organizationEntity = this.getOrganizationById(organId);
         organizationEntity.getOrganizationBug().add(bugsEntity);
@@ -67,7 +66,7 @@ public class OrganizationServiceImp implements OrganizationService{
         return this.getOrganizationById(organId).getOrganizationBug();
     }
 
-    @Override
+    @Override // Update Bug in an organization
     public String updateBug(int organId, BugsEntity bugsEntity) {
         OrganizationEntity organizationEntity = this.getOrganizationById(organId);
         organizationEntity.getOrganizationBug().add(bugsEntity);

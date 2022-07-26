@@ -12,7 +12,7 @@ import java.io.IOException;
 @Component
 public class RestAuthenticateEntryPoint implements AuthenticationEntryPoint {
 
-    @Override
+    @Override // rejects every unauthenticated request and send error code 401
     public void commence(HttpServletRequest request, HttpServletResponse response,
                          AuthenticationException authException) throws IOException, ServletException {
 
