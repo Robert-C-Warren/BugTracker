@@ -35,7 +35,6 @@ public class CommentsEntity {
         this.text = text;
         this.postedBy = postedBy;
         this.postedAt = postedAt;
-
     }
 
 }
