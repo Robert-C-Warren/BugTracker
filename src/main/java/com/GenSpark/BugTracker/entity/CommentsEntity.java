@@ -2,7 +2,6 @@ package com.GenSpark.BugTracker.entity;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Date;
 
 @Entity
 @Table
@@ -11,6 +10,19 @@ public class CommentsEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int commentsId;
     private String text;
+
+    @Lob //BLOB (binary data)
+    @Column( length=512)
+    private String attachment;
+
+    public String getAttachment() {
+        return attachment;
+    }
+
+    public void setAttachment(String attachment) {
+        this.attachment = attachment;
+    }
+
     private String postedBy;
     private LocalDate postedAt =  LocalDate.now();
 
@@ -30,9 +42,10 @@ public class CommentsEntity {
     public CommentsEntity() {
     }
 
-    public CommentsEntity(int commentsId, String text, String postedBy, LocalDate postedAt) {
+    public CommentsEntity(int commentsId, String text, String atatchment, String postedBy, LocalDate postedAt) {
         this.commentsId = commentsId;
         this.text = text;
+        this.attachment = atatchment;
         this.postedBy = postedBy;
         this.postedAt = postedAt;
     }

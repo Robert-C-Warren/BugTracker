@@ -13,7 +13,8 @@ public class OrganizationEntity {
     private String organizationName;
     private String organizationDescription;
 
-    @Lob
+
+    @Lob //BLOB (binary data)
     @Column(name="CONTENT", length=512)
     private String data;
 
